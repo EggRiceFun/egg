@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>mvc</title>
+    <meta charset="utf-8">
+    <script charset="utf-8" src="../vendor/jquery-2.1.4.min.js"></script>
+    <script charset="utf-8" src="../bin/egg.js"></script>
+</head>
+<body>
+    <div class="aaa">
+        <p data-watch="default">
+            fff
+        </p>
+        <input type="text" value="" class="bb">
+        <div class="bbb">
+            <h5 class="ccc">
+                h5
+            </h5>
+        </div>
+        <p id="11">
+        </p>
+        <input  class="aa" value="">
+    </div>
+    <p>ff</p>
+    <button type="button" name="button">add</button>
+    <script type="text/javascript">
+        var Bar = Egg.Presenter.extend({
+            $el: '.aaa',
+            watch: {
+                'bbb':{
+                    'ccc': 'h5, .bb',
+                    'fff': '#null'
+                },
+                'ddd': '#11, .aa'
+            },
+            init: function(){
+                this.watch.listen('ddd',function(val){
+                    console.log(val);
+                });
+                this.watch.listen('bbb',function(val){
+                    console.log(val);
+                });
+            }
+        });
+        var Foo = Egg.Presenter.extend({
+            $p: 'p.fff',
+            watch: {
+                'text': '.fff'
+            },
+            template: function(data){
+                return      '<div>'
+                        +       '<h3>title</h3>'
+                        +       '<p class="fff">'+data.test+'</p>'
+                        +   '</div>';
+            },
+            init: function(){
+
+            }
+        });
+        var Test = Egg.Presenter.extend({
+            watch: {
+                'test': 'p:not(p.fff)',
+                'test2': 'h3'
+            },
+            init: function() {
+                this.collection.append(Foo,{'test':'fffffff'});
+            }
+        });
+        TestModule = new Test;
+        BarModule = new Bar;
+        $('button').click(function(){
+            $("body").append('<h3></h3>');
+        });
+    </script>
+</body>
+</html>
